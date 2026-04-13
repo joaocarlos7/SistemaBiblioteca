@@ -4,7 +4,7 @@ public class Main {
 
         Menu m = new Menu();
 
-        m.execute();
+        m.mainExecute();
 
     }
 }

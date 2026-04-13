@@ -3,14 +3,15 @@ import java.time.LocalDate;
 public class Author {
 
     private int id;
+    private static int counter = 0;
     private String name;
     private LocalDate birthDate;
 
 
-    public Author(int id, String name, LocalDate birthDate) {
-        this.id = id;
+    public Author(String name, LocalDate birthDate) {
         this.name = name;
         this.birthDate = birthDate;
+        this.id = ++counter;
     }
 
     // ID

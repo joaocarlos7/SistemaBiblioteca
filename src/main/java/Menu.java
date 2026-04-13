@@ -1,25 +1,52 @@
+import java.time.LocalDate;
 import java.util.Scanner;
+import java.time.format.DateTimeFormatter;
 
-public class Menu {
+    public class Menu {
 
         Scanner sc = new Scanner(System.in);
-
         Library library = new Library();
 
-
-
-        public void execute() {
+        // Menu
+        public void mainExecute() {
             int option;
 
             do {
-                showOptions();
+                mainMenuDescription();
                 option = sc.nextInt();
                 sc.nextLine();
 
 
                 switch (option) {
                     case 1:
-                        registerClient();
+                        clientMenu();
+                        break;
+                    case 2:
+                        admMenu();
+                        break;
+                    case 3:
+                        System.out.println("Encerrando sistema...");
+                        break;
+                    default:
+                        System.out.println("Opção inválida.");
+                }
+
+            } while (option != 3);
+
+            sc.close();
+        }
+        public void admMenu() {
+            int option;
+
+            do {
+                admMenuDescription();
+                option = sc.nextInt();
+                sc.nextLine();
+
+
+                switch (option) {
+                    case 1:
+                        registerAuthor();
                         break;
                     case 2:
                         registerBook();
@@ -28,199 +55,165 @@ public class Menu {
                         showBooksLoaned();
                         break;
                     case 4:
-                        clientWithBooks();
-                        break;
-                    case 5:
-                        returnBook();
-                        break;
-                    case 6:
                         System.out.println("Encerrando sistema...");
                         break;
                     default:
                         System.out.println("Opção inválida.");
                 }
 
-            } while (option != 6);
+            } while (option != 4);
 
-            sc.close();
+        }
+        public void clientMenu() {
+            int option;
+
+            do {
+                clientMenuDescription();
+                option = sc.nextInt();
+                sc.nextLine();
+
+
+                switch (option) {
+                    case 1:
+                        registerLoan();
+                        break;
+                    case 2:
+                        returnBook();
+                        break;
+                    case 3:
+                        System.out.println("Encerrando sistema...");
+                        break;
+                    default:
+                        System.out.println("Opção inválida.");
+                }
+
+            } while (option != 3);
+
         }
 
-        public void showOptions() {
+        // Menu Descriptions
+        public void mainMenuDescription() {
 
-        System.out.println("===================");
-        System.out.println("Digite a opção desejada: ");
-        System.out.println("1. Cadastrar pessoa.");
-        System.out.println("2. Cadastrar livro emprestado");
-        System.out.println("3. Verificar livros emprestados.");
-        System.out.println("4. Verificar pessoas com livros.");
-        System.out.println("5. Devolver livro.");
-        System.out.println("6. Sair");
-        System.out.println("===================");
+            System.out.println("===================");
+            System.out.println("Digite a opção desejada: ");
+            System.out.println("1. Cliente.");
+            System.out.println("2. Administrador.");
+            System.out.println("3. Sair");
+            System.out.println("===================");
+        }
+        public void admMenuDescription() {
+
+            System.out.println("===================");
+            System.out.println("Digite a opção desejada: ");
+            System.out.println("1. Registrar Autor.");
+            System.out.println("2. Registrar Livro.");
+            System.out.println("3. Listar livros emprestados.");
+            System.out.println("4. Sair");
+            System.out.println("===================");
+
+        }
+        public void clientMenuDescription(){
+            System.out.println("===================");
+            System.out.println("Digite a opção desejada: ");
+            System.out.println("1. Listar livros disponíveis.");
+            System.out.println("2. Devolver livro.");
+            System.out.println("3. Sair");
+            System.out.println("===================");
+
         }
 
-        private void registerClient() {
-        if (customer >= client.length) {
-            System.out.println("Limite de pessoas atingido.");
-            return;
+        // Admin Options Menu
+        private void registerAuthor() {
+
+            System.out.println();
+            System.out.println("=== Cadastrar Autor ===");
+
+            System.out.print("Nome: ");
+            String name = sc.nextLine();
+
+            System.out.print("Data de aniversário (dd:MM:yyyy): ");
+            String bornDay = sc.nextLine();
+
+            LocalDate bd = LocalDate.parse(bornDay, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            Author a = new Author(name, bd);
+            library.addAuthor(a);
+
+            System.out.println("Autor cadastrado com sucesso!");
         }
-
-        System.out.println("=== Cadastro de pessoas ===");
-
-        System.out.print("Digite o nome: ");
-        String name = sc.nextLine();
-
-        System.out.print("Digite o sexo (Masculino 'M' ou Feminino 'F'): ");
-        String gender = sc.nextLine();
-
-        System.out.println("Digite a idade: ");
-        int age = sc.nextInt();
-
-        client[customer] = new Client(name, gender, age);
-
-        library.addLoan();
-
-        System.out.println("Pessoa cadastrada no índice " + customer + ": " + client[customer].getName());
-
-    }
-
+        private void showAuthors() {
+            System.out.println("==============");
+            System.out.println("Autores registrados: ");
+            for(int i = 0; i < library.getAuthors().size(); i++) {
+                System.out.println(library.getAuthors().get(i).getName());
+            }
+        }
         private void registerBook() {
-        if (booksLoaned >= book.length) {
-            System.out.println("Limite de livros atingido.");
-            return;
+
+            System.out.println();
+            System.out.println("=== Cadastro de livro emprestado ===");
+
+            System.out.print("Título: ");
+            String title = sc.nextLine();
+
+            System.out.print("Autor: ");
+            showAuthors();
+            int indexAuthor = readInt("Escolha o autor pelo índice: ");
+            Author author = library.findAuthor(indexAuthor);
+
+            System.out.println("Total de páginas: ");
+            int pages = sc.nextInt();
+
+            Book b = new Book(title, author, pages);
+            library.addBook(b);
+
+            System.out.println("Livro cadastrado com sucesso!");
         }
 
-        if (customer == 0) {
-            System.out.println("Nenhuma pessoa cadastrada. Cadastre uma pessoa antes.");
-            return;
+        // Client Options Menu
+        private void registerLoan() {
+
+            showBooksAvailable();
+            int id = readInt("Digite o ID do livro: ");
+            sc.nextLine();
+
+            System.out.println("Digite seu nome: ");
+            String name = sc.nextLine();
+
+            System.out.print("Digite a data de devolução (dd:MM:yyyy): ");
+            String returnLoan = sc.nextLine();
+
+            LocalDate now = LocalDate.now();
+
+            LocalDate returnDate = LocalDate.parse(returnLoan, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+            Loan l = new Loan(library.findBookById(id), name, now, returnDate);
+            library.addLoan(l);
+
         }
-
-        System.out.println();
-        System.out.println("=== Cadastro de livro emprestado ===");
-
-        System.out.print("Título: ");
-        String title = sc.nextLine();
-
-        System.out.print("Autor: ");
-        String author = sc.nextLine();
-
-        System.out.println("Total de páginas: ");
-        int pages = sc.nextInt();
-
-        System.out.println("Escolha o leitor pelo índice:");
-        showRegisterClient();
-
-        int indexClient = sc.nextInt();
-
-        if (indexClient < 0 || indexClient >= customer || client[indexClient] == null) {
-            System.out.println("Pessoa inválida.");
-            return;
-        }
-
-        book[booksLoaned] = new Book(title, author, pages, client[indexClient]);
-
-        System.out.println("Livro cadastrado no índice " + booksLoaned + " para " + client[indexClient].getName());
-
-        booksLoaned++;
-        loans++;
-    }
-
-        private void showBooksLoaned() {
-
-        System.out.println();
-        System.out.println("=== Livros emprestados ===");
-
-        if (booksLoaned == 0) {
-            System.out.println("Nenhum livro emprestado.");
-            return;
-        }
-
-        for (int i = 0; i < booksLoaned; i++) {
-            Book b = book[i];
-
-            if (book != null) {
-                System.out.println("Índice do livro: " + i);
-                System.out.println("Título: " + b.getTitle());
-                System.out.println("Autor: " + b.getAuthor());
-                System.out.println("Total de páginas: " + b.getPages());
-                System.out.println("Leitor: " + b.getReader().getName());
-                System.out.println("-------------------------");
+        private void showBooksAvailable(){
+            System.out.println("==============");
+            System.out.println("Livros disponíveis: ");
+            for(int i = 0; i < library.getBooks().size(); i++) {
+                System.out.println("=================================");
+                System.out.println(library.getBooks().get(i).getId());
+                System.out.println(library.getBooks().get(i).getTitle());
+                System.out.println(library.getBooks().get(i).getAuthor().getName());
+                System.out.println(library.getBooks().get(i).getPages());
+                System.out.println("=================================");
             }
         }
+        private void returnBook(){
+            System.out.println("===================");
+            System.out.println("Digite o índice do livro a qual quer devolver: ");
+            for(Loan : library.getLoans().get()) {
+            library.getLoans().get()
 
-        System.out.println("Total de livros atualmente emprestados: " + booksLoaned);
-        System.out.println("Total histórico de empréstimos cadastrados: " + loans);
-    }
-
-        private void clientWithBooks() {
-        System.out.println();
-        System.out.println("=== Pessoas com livros ===");
-
-        if (booksLoaned == 0) {
-            System.out.println("Nenhuma pessoa está com livro emprestado.");
-            return;
+        }
         }
 
-        for (int i = 0; i < booksLoaned; i++) {
-            Book b = book[i];
-
-            if (book != null) {
-                Client client = b.getReader();
-
-                System.out.println("Livro índice " + i + ": " + b.getTitle());
-                System.out.println("Pessoa: " + client.getName());
-                System.out.println("Sexo: " + client.getGender());
-                System.out.println("Idade: " + client.getAge());
-                System.out.println("-------------------------");
-            }
-        }}
-
-        private void returnBook() {
-        System.out.println();
-        System.out.println("=== Devolver livro ===");
-
-        if (booksLoaned == 0) {
-            System.out.println("Nenhum livro para devolver.");
-            return;
-        }
-
-        showBooksLoaned();
-
-        int indexBook = readInt("Digite o índice do livro a devolver: ");
-
-        if (indexBook < 0 || indexBook >= booksLoaned || book[indexBook] == null) {
-            System.out.println("Índice de livro inválido.");
-            return;
-        }
-
-        System.out.println("Livro devolvido: " + book[indexBook].getTitle());
-
-        for (int i = indexBook; i < booksLoaned - 1; i++) {
-            book[i] = book[i + 1];
-        }
-
-        book[booksLoaned - 1] = null;
-        booksLoaned--;
-    }
-
-        private void showRegisterClient() {
-        if (customer == 0) {
-            System.out.println("Nenhuma pessoa cadastrada.");
-            return;
-        }
-
-        for (int i = 0; i < customer; i++) {
-            if (client[i] != null) {
-                System.out.println(
-                        i + " - " +
-                                client[i].getName() +
-                                " | sexo: " + client[i].getGender() +
-                                " | idade: " + client[i].getAge()
-                );
-            }
-        }
-    }
-
+        // Menu Tools
         private int readInt(String message) {
+        Scanner sc = new Scanner(System.in);
         while (true) {
             System.out.print(message);
 
@@ -232,6 +225,10 @@ public class Menu {
 
             System.out.println("Digite um número válido.");
             sc.nextLine();
+            sc.close();
         }
     }
+
 }
+
+

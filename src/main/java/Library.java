@@ -23,7 +23,14 @@ public class Library {
     public void removeBook(int index) {
         books.remove(index);
     }
+    public Book findBookById(int id) {
+        for(Book b : books) {
+            if (b.getId() == id) {
+                return b;
+            }
 
+        }
+    }
 
     //  Author
     public void addAuthor(Author author) {
@@ -39,7 +46,6 @@ public class Library {
         authors.remove(index);
     }
 
-
     // Loans
     public void addLoan(Loan loan) {
         loans.add(loan);
@@ -53,6 +59,7 @@ public class Library {
     public void returnLoan(int index) {
         loans.remove(index);
     }
+
 
 
 

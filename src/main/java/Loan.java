@@ -3,18 +3,19 @@ import java.time.LocalDate;
 public class Loan {
 
     private int id;
+    private static int counter = 0;
     private Book book;
     private String name;
     private LocalDate loanDate;
     private LocalDate returnDate;
 
     // Constructor
-    public Loan(int id, Book book, String name, LocalDate loanDate, LocalDate returnDate) {
-        this.id = id;
+    public Loan(Book book, String name, LocalDate loanDate, LocalDate returnDate) {
         this.book = book;
         this.name = name;
         this.loanDate = loanDate;
         this.returnDate = returnDate;
+        this.id = ++counter;
     }
 
     // ID

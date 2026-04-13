@@ -5,18 +5,18 @@ public class Book {
     private String title;
     private Author author;
     private int pages;
-    private Client reader;
     private int id;
+    private static int counter = 0;
     private boolean available;
     private LocalDate registDate;
     private LocalDate dateUpdate;
 
     // Constructor
-    public Book(String title, Author author, int pages, Client reader) {
+    public Book(String title, Author author, int pages) {
         this.title = title;
         this.author = author;
         this.pages = pages;
-        this.reader = reader;
+        this.id = ++counter;
     }
 
     // Getters & Setters
@@ -41,14 +41,6 @@ public class Book {
     }
     public void setPages(int pages) {
         this.pages = pages;
-    }
-
-    // Reader
-    public Client getReader() {
-        return reader;
-    }
-    public void setReader(Client reader) {
-        this.reader = reader;
     }
 
     // ID
