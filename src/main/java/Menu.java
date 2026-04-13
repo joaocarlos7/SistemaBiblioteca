@@ -4,12 +4,8 @@ public class Menu {
 
         Scanner sc = new Scanner(System.in);
 
-        Client[] client = new Client[10];
-        Book[] book = new Book[100];
+        Library library = new Library();
 
-        protected int customer = 0;
-        protected int booksLoaned = 0;
-        protected int loans = 0;
 
 
         public void execute() {
@@ -81,9 +77,10 @@ public class Menu {
 
         client[customer] = new Client(name, gender, age);
 
+        library.addLoan();
+
         System.out.println("Pessoa cadastrada no índice " + customer + ": " + client[customer].getName());
 
-        customer++;
     }
 
         private void registerBook() {
@@ -175,8 +172,7 @@ public class Menu {
                 System.out.println("Idade: " + client.getAge());
                 System.out.println("-------------------------");
             }
-        }
-    }
+        }}
 
         private void returnBook() {
         System.out.println();
