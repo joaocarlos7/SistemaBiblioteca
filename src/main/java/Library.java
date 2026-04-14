@@ -24,12 +24,13 @@ public class Library {
         books.remove(index);
     }
     public Book findBookById(int id) {
-        for(Book b : books) {
+        for (Book b : books) {
             if (b.getId() == id) {
                 return b;
             }
-
         }
+        System.out.println("Livro não encontrado");
+        return null;
     }
 
     //  Author

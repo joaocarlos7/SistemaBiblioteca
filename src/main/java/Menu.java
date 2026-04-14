@@ -25,7 +25,7 @@ import java.time.format.DateTimeFormatter;
                         admMenu();
                         break;
                     case 3:
-                        System.out.println("Encerrando sistema...");
+                        System.out.println("Encerrando o sistema...");
                         break;
                     default:
                         System.out.println("Opção inválida.");
@@ -168,10 +168,17 @@ import java.time.format.DateTimeFormatter;
 
             System.out.println("Livro cadastrado com sucesso!");
         }
+        private void showBooksLoaned() {
+            System.out.println("==============");
+            System.out.println("Livros emprestados: ");
+            for(int i = 0; i < library.getAuthors().size(); i++) {
+                System.out.println(library.getBooks().get(i).getTitle());
+            }
+        }
 
         // Client Options Menu
         private void registerLoan() {
-
+            if(library.getBooks().size() > 0) {
             showBooksAvailable();
             int id = readInt("Digite o ID do livro: ");
             sc.nextLine();
@@ -188,28 +195,38 @@ import java.time.format.DateTimeFormatter;
 
             Loan l = new Loan(library.findBookById(id), name, now, returnDate);
             library.addLoan(l);
+            library.findBookById(id).setAvailable(false);
+
+            } else {
+                System.out.println("Nenhum livro disponível para empréstimo.");
+            }
+
 
         }
-        private void showBooksAvailable(){
+        private void showBooksAvailable() {
             System.out.println("==============");
             System.out.println("Livros disponíveis: ");
-            for(int i = 0; i < library.getBooks().size(); i++) {
-                System.out.println("=================================");
-                System.out.println(library.getBooks().get(i).getId());
-                System.out.println(library.getBooks().get(i).getTitle());
-                System.out.println(library.getBooks().get(i).getAuthor().getName());
-                System.out.println(library.getBooks().get(i).getPages());
-                System.out.println("=================================");
+            for (int i = 0; i < library.getBooks().size(); i++) {
+                if (library.findBookById(i).isAvailable()) {
+                    System.out.println("=================================");
+                    System.out.println(library.getBooks().indexOf(i));
+                    System.out.println(library.getBooks().get(i).getTitle());
+                    System.out.println(library.getBooks().get(i).getAuthor().getName());
+                    System.out.println(library.getBooks().get(i).getPages());
+                    System.out.println("=================================");
+                }
             }
         }
         private void returnBook(){
             System.out.println("===================");
             System.out.println("Digite o índice do livro a qual quer devolver: ");
-            for(Loan : library.getLoans().get()) {
-            library.getLoans().get()
+            for(Book b : library.getBooks()) {
+                System.out.println(b);
+        }
+            int returnBook = sc.nextInt();
+            library.returnLoan(returnBook);
+        }
 
-        }
-        }
 
         // Menu Tools
         private int readInt(String message) {
