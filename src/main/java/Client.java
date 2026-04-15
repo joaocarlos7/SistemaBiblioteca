@@ -3,6 +3,7 @@ public class Client {
     private String name;
     private String gender;
     private int age;
+    private int phoneNumber;
 
     public Client(String name, String gender, int age) {
         this.name = name;
@@ -32,5 +33,13 @@ public class Client {
 
     public void setAge(int age) {
         this.age = age;
+    }
+
+    public int getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(int phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 }

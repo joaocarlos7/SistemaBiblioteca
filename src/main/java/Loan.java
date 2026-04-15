@@ -2,8 +2,6 @@ import java.time.LocalDate;
 
 public class Loan {
 
-    private int id;
-    private static int counter = 0;
     private Book book;
     private String name;
     private LocalDate loanDate;
@@ -15,15 +13,6 @@ public class Loan {
         this.name = name;
         this.loanDate = loanDate;
         this.returnDate = returnDate;
-        this.id = ++counter;
-    }
-
-    // ID
-    public int getId() {
-        return id;
-    }
-    public void setId(int id) {
-        this.id = id;
     }
 
     // Book

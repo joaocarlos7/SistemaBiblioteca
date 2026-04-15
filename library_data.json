@@ -1,0 +1,40 @@
+{
+  "authors": [
+    {
+      "id": 1,
+      "name": "J. K. Rowling",
+      "birthDate": "1965-07-31"
+    }
+  ],
+  "books": [
+    {
+      "title": "Harry Potter e a Pedra Filosofal",
+      "author": {
+        "id": 1,
+        "name": "J. K. Rowling",
+        "birthDate": "1965-07-31"
+      },
+      "pages": 260,
+      "id": 1,
+      "available": false
+    }
+  ],
+  "loans": [
+    {
+      "book": {
+        "title": "Harry Potter e a Pedra Filosofal",
+        "author": {
+          "id": 1,
+          "name": "J. K. Rowling",
+          "birthDate": "1965-07-31"
+        },
+        "pages": 260,
+        "id": 1,
+        "available": false
+      },
+      "name": "Evellyn",
+      "loanDate": "2026-04-15",
+      "returnDate": "2000-01-01"
+    }
+  ]
+}

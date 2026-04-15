@@ -17,6 +17,7 @@ public class Book {
         this.author = author;
         this.pages = pages;
         this.id = ++counter;
+
     }
 
     // Getters & Setters
@@ -50,6 +51,9 @@ public class Book {
     public void setId(int id) {
         this.id = id;
     }
+    public static void setCounter(int value) {
+        counter = value;
+    }
 
     // Availability
     public boolean isAvailable() {
@@ -74,6 +78,8 @@ public class Book {
     public void setDateUpdate(LocalDate dateUpdate) {
         this.dateUpdate = dateUpdate;
     }
+
+
 
 
 

@@ -21,6 +21,9 @@ public class Author {
     public void setId(int id) {
         this.id = id;
     }
+    public static void setCounter(int value) {
+        counter = value;
+    }
 
     // Name
     public String getName() {

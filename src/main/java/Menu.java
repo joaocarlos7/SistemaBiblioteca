@@ -1,4 +1,5 @@
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
 
@@ -9,6 +10,7 @@ import java.time.format.DateTimeFormatter;
 
         // Menu
         public void mainExecute() {
+            PersistenceManager.load(library);
             int option;
 
             do {
@@ -81,7 +83,7 @@ import java.time.format.DateTimeFormatter;
                         returnBook();
                         break;
                     case 3:
-                        System.out.println("Encerrando sistema...");
+                        System.out.println("=====================");
                         break;
                     default:
                         System.out.println("Opção inválida.");
@@ -108,7 +110,7 @@ import java.time.format.DateTimeFormatter;
             System.out.println("1. Registrar Autor.");
             System.out.println("2. Registrar Livro.");
             System.out.println("3. Listar livros emprestados.");
-            System.out.println("4. Sair");
+            System.out.println("4. Voltar ao menu anterior.");
             System.out.println("===================");
 
         }
@@ -117,7 +119,7 @@ import java.time.format.DateTimeFormatter;
             System.out.println("Digite a opção desejada: ");
             System.out.println("1. Listar livros disponíveis.");
             System.out.println("2. Devolver livro.");
-            System.out.println("3. Sair");
+            System.out.println("3. Voltar ao menu anterior");
             System.out.println("===================");
 
         }
@@ -131,57 +133,83 @@ import java.time.format.DateTimeFormatter;
             System.out.print("Nome: ");
             String name = sc.nextLine();
 
-            System.out.print("Data de aniversário (dd:MM:yyyy): ");
-            String bornDay = sc.nextLine();
+            LocalDate bd = null;
+            while (bd == null) {
+                try {
 
-            LocalDate bd = LocalDate.parse(bornDay, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                    System.out.print("Data de aniversário (dd/MM/yyyy): ");
+                    String bornDay = sc.nextLine();
+                    bd = LocalDate.parse(bornDay, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+
+                } catch (DateTimeParseException e) {
+                    System.out.println("Data inválida! Use o formato: dd/MM/yyyy");
+                }
+            }
+
+
             Author a = new Author(name, bd);
             library.addAuthor(a);
 
             System.out.println("Autor cadastrado com sucesso!");
+            PersistenceManager.save(library);
         }
         private void showAuthors() {
             System.out.println("==============");
             System.out.println("Autores registrados: ");
             for(int i = 0; i < library.getAuthors().size(); i++) {
-                System.out.println(library.getAuthors().get(i).getName());
+                System.out.println(i + " - " + library.getAuthors().get(i).getName());
             }
         }
         private void registerBook() {
-
+            if(library.getAuthors().isEmpty()) {
+                System.out.println("Cadastre um autor antes.");
+            } else {
             System.out.println();
-            System.out.println("=== Cadastro de livro emprestado ===");
+            System.out.println("=== Cadastro de livro ===");
 
             System.out.print("Título: ");
             String title = sc.nextLine();
 
             System.out.print("Autor: ");
             showAuthors();
+
             int indexAuthor = readInt("Escolha o autor pelo índice: ");
-            Author author = library.findAuthor(indexAuthor);
 
-            System.out.println("Total de páginas: ");
-            int pages = sc.nextInt();
+            if(indexAuthor <0 || indexAuthor >= library.getAuthors().size()) {
+                    System.out.println("Índice Inválido!");
 
-            Book b = new Book(title, author, pages);
-            library.addBook(b);
+                } else {
+                    Author author = library.findAuthor(indexAuthor);
 
-            System.out.println("Livro cadastrado com sucesso!");
+                    int pages = readInt("Total de páginas: ");
+
+                    Book b = new Book(title, author, pages);
+                    library.addBook(b);
+                    b.setAvailable(true);
+
+                    System.out.println("Livro cadastrado com sucesso!");
+                    PersistenceManager.save(library);
+                }
+            }
         }
         private void showBooksLoaned() {
-            System.out.println("==============");
-            System.out.println("Livros emprestados: ");
-            for(int i = 0; i < library.getAuthors().size(); i++) {
-                System.out.println(library.getBooks().get(i).getTitle());
+            if (library.getLoans().isEmpty()) {
+                System.out.println("Nenhum livro emprestado no momento");
+            } else {
+                System.out.println("==============");
+                System.out.println("Livros emprestados: ");
+                for (int i = 0; i < library.getLoans().size(); i++) {
+                    Loan l = library.getLoans().get(i);
+                    System.out.println(i + " - Livro: " + l.getBook().getTitle() + " | Cliente: " + l.getName());
+                }
             }
         }
 
         // Client Options Menu
         private void registerLoan() {
-            if(library.getBooks().size() > 0) {
+            if(library.getBooks().size() > 0 && library.getBooks().getFirst().isAvailable()) {
             showBooksAvailable();
-            int id = readInt("Digite o ID do livro: ");
-            sc.nextLine();
+            int id = readInt("Digite o índice do livro: ");
 
             System.out.println("Digite seu nome: ");
             String name = sc.nextLine();
@@ -190,13 +218,14 @@ import java.time.format.DateTimeFormatter;
             String returnLoan = sc.nextLine();
 
             LocalDate now = LocalDate.now();
-
             LocalDate returnDate = LocalDate.parse(returnLoan, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
 
-            Loan l = new Loan(library.findBookById(id), name, now, returnDate);
-            library.addLoan(l);
-            library.findBookById(id).setAvailable(false);
 
+            Book book = library.findBook(id);
+            Loan l = new Loan(book, name, now, returnDate);
+            library.addLoan(l);
+            book.setAvailable(false);
+            PersistenceManager.save(library);
             } else {
                 System.out.println("Nenhum livro disponível para empréstimo.");
             }
@@ -207,26 +236,34 @@ import java.time.format.DateTimeFormatter;
             System.out.println("==============");
             System.out.println("Livros disponíveis: ");
             for (int i = 0; i < library.getBooks().size(); i++) {
-                if (library.findBookById(i).isAvailable()) {
+                if (library.getBooks().get(i).isAvailable()) {
                     System.out.println("=================================");
-                    System.out.println(library.getBooks().indexOf(i));
-                    System.out.println(library.getBooks().get(i).getTitle());
-                    System.out.println(library.getBooks().get(i).getAuthor().getName());
-                    System.out.println(library.getBooks().get(i).getPages());
+                    System.out.println("Índice: " + i);
+                    System.out.println("Título: " + library.getBooks().get(i).getTitle());
+                    System.out.println("Autor: " + library.getBooks().get(i).getAuthor().getName());
+                    System.out.println("Número de páginas: " + library.getBooks().get(i).getPages());
                     System.out.println("=================================");
                 }
             }
         }
-        private void returnBook(){
-            System.out.println("===================");
-            System.out.println("Digite o índice do livro a qual quer devolver: ");
-            for(Book b : library.getBooks()) {
-                System.out.println(b);
+        private void returnBook() {
+            if (library.getLoans().isEmpty()) {
+                System.out.println("Nenhum livro emprestado.");
+            } else {
+                System.out.println("===================");
+                System.out.println("Digite o índice do livro a qual quer devolver: ");
+                for (int i = 0; i < library.getLoans().size(); i++) {
+                    Loan l = library.getLoans().get(i);
+                    System.out.println(i + " - " + l.getBook().getTitle() + " | Cliente: " + l.getName());
+                }
+                int returnBook = sc.nextInt();
+                Book returnedBook = library.getLoans().get(returnBook).getBook();
+                returnedBook.setAvailable(true);
+                library.returnLoan(returnBook);
+                PersistenceManager.save(library);
+                System.out.println("Livro retornado para a biblioteca com sucesso!");
+            }
         }
-            int returnBook = sc.nextInt();
-            library.returnLoan(returnBook);
-        }
-
 
         // Menu Tools
         private int readInt(String message) {
@@ -242,7 +279,7 @@ import java.time.format.DateTimeFormatter;
 
             System.out.println("Digite um número válido.");
             sc.nextLine();
-            sc.close();
+            return readInt(message);
         }
     }
 
