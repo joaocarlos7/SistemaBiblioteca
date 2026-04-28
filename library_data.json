@@ -2,8 +2,25 @@
   "authors": [
     {
       "id": 1,
-      "name": "J. K. Rowling",
-      "birthDate": "1965-07-31"
+      "name": "J. K. Rowling"
+    },
+    {
+      "id": 3,
+      "name": "J. R. R. Tolkien",
+      "nationality": "Britânica"
+    },
+    {
+      "id": 4,
+      "name": "George R.R. Martin",
+      "nationality": "Americana"
+    }
+  ],
+  "clients": [
+    {
+      "name": "Evellyn Rosental",
+      "age": 15,
+      "phoneNumber": "11995502554",
+      "id": 1
     }
   ],
   "books": [
@@ -11,30 +28,80 @@
       "title": "Harry Potter e a Pedra Filosofal",
       "author": {
         "id": 1,
-        "name": "J. K. Rowling",
-        "birthDate": "1965-07-31"
+        "name": "J. K. Rowling"
       },
-      "pages": 260,
+      "pages": 230,
       "id": 1,
-      "available": false
+      "available": true
+    },
+    {
+      "title": "Harry Potter e o Prisioneiro de Azkaban",
+      "author": {
+        "id": 1,
+        "name": "J. K. Rowling"
+      },
+      "pages": 360,
+      "id": 3,
+      "available": true
+    },
+    {
+      "title": "Harry Potter e a Câmara Secreta",
+      "author": {
+        "id": 1,
+        "name": "J. K. Rowling"
+      },
+      "pages": 288,
+      "id": 4,
+      "available": true,
+      "registDate": "1998-07-02"
+    },
+    {
+      "title": "O Hobbit",
+      "author": {
+        "id": 3,
+        "name": "J. R. R. Tolkien",
+        "nationality": "Britânica"
+      },
+      "pages": 330,
+      "id": 5,
+      "available": false,
+      "registDate": "1937-09-21"
+    },
+    {
+      "title": "A Guerra dos Tronos",
+      "author": {
+        "id": 4,
+        "name": "George R.R. Martin",
+        "nationality": "Americana"
+      },
+      "pages": 592,
+      "id": 6,
+      "available": true,
+      "registDate": "1996-08-01"
     }
   ],
   "loans": [
     {
       "book": {
-        "title": "Harry Potter e a Pedra Filosofal",
+        "title": "O Hobbit",
         "author": {
-          "id": 1,
-          "name": "J. K. Rowling",
-          "birthDate": "1965-07-31"
+          "id": 3,
+          "name": "J. R. R. Tolkien",
+          "nationality": "Britânica"
         },
-        "pages": 260,
-        "id": 1,
-        "available": false
+        "pages": 330,
+        "id": 5,
+        "available": false,
+        "registDate": "1937-09-21"
       },
-      "name": "Evellyn",
-      "loanDate": "2026-04-15",
-      "returnDate": "2000-01-01"
+      "client": {
+        "name": "Evellyn Rosental",
+        "age": 15,
+        "phoneNumber": "11995502554",
+        "id": 1
+      },
+      "loanDate": "2026-04-28",
+      "returnDate": "2026-10-21"
     }
   ]
 }
