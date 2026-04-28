@@ -1,4 +1,4 @@
-# 📚 Sistema de Biblioteca
+# Sistema de Biblioteca
 
 Sistema desenvolvido em **Java** para gerenciamento de livros, clientes e empréstimos em uma biblioteca, com suporte a persistência de dados em JSON.
 
@@ -6,13 +6,13 @@ O projeto foi construído como **desafio de conclusão de módulo da Rocketseat*
 
 ---
 
-## 📌 Objetivo
+## Objetivo
 
 Centralizar e automatizar o controle de empréstimos de livros, permitindo o cadastro de clientes, gerenciamento do acervo e acompanhamento dos livros disponíveis e emprestados.
 
 ---
 
-## 🚀 Funcionalidades
+## Funcionalidades
 
 - ✅ Cadastro de livros  
 - ✅ Cadastro de clientes  
@@ -22,7 +22,7 @@ Centralizar e automatizar o controle de empréstimos de livros, permitindo o cad
 
 ---
 
-## 🛠 Tecnologias
+## Tecnologias
 
 - Java (JDK 8+)  
 - Programação Orientada a Objetos (POO)  
@@ -33,7 +33,7 @@ Centralizar e automatizar o controle de empréstimos de livros, permitindo o cad
 
 ---
 
-## 🧠 Arquitetura
+## Arquitetura
 
 - Estrutura baseada em entidades (`Book`, `Author`, `Loan`, `Client`)  
 - Camada de gerenciamento central (`Library`)  
@@ -42,7 +42,7 @@ Centralizar e automatizar o controle de empréstimos de livros, permitindo o cad
 
 ---
 
-## ▶️ Como executar
+## Como executar
 
 ```bash
 git clone https://github.com/joaocarlos7/SistemaBiblioteca.git
