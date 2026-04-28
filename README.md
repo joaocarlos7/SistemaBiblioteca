@@ -49,3 +49,10 @@ git clone https://github.com/joaocarlos7/SistemaBiblioteca.git
 cd SistemaBiblioteca
 javac Main.java
 java Main
+
+---
+
+## Autoria
+
+Este projeto foi desenvolvido por ## João Carlos V. Machado.
+
