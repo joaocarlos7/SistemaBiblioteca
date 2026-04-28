@@ -42,6 +42,12 @@ Centralizar e automatizar o controle de empréstimos de livros, permitindo o cad
 
 ---
 
+## Autoria
+
+Este projeto foi desenvolvido por João Carlos V. Machado.
+
+---
+
 ## Como executar
 
 ```bash
